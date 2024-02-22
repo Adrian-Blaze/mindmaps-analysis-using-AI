@@ -5,7 +5,7 @@ import os
 import streamlit as st
 import tempfile
 
-client = OpenAI(api_key='sk-xxx')
+client = OpenAI(api_key=st.secrets["OPENAI_API_KEY"])
 
 
 #Use a deep learned trained model to detect the central image of the mindmap
