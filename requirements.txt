@@ -1,3 +1,4 @@
 openai==1.9.0
 openapi-schema-pydantic==1.2.4
 streamlit==1.23.1
+opencv-python==4.8.1.78
