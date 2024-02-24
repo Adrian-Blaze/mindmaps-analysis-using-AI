@@ -49,7 +49,8 @@ def main():
             You are to start analyzing the uploaded mindmap image from the central image ALWAYS.\
             Always start your feedback with, 'Hello, there. Great attempt! Welldone. However, here are a few observations' or something similar in order to avoid monotony.\
             Keep observations numbered in roman numerals, each point in a new line.\
-        
+            YOUR OUTPUT/FEEDBACK SHOULD ONLY BE PRESET RULES THAT HAVE NOT BEEN FOLLOWED, WITH SPECIFIC EXAMPLES. ALL PRESET RULES FOLLOWED SHOULD NOT BE IN THE OUTPUT\
+              
 
             Here are the specific preset rules to guide your feedback:
             - At the centre - we need to find out if only words are written or there is an image as well.
