@@ -69,10 +69,12 @@ def main():
      
       # Check if the ask button is clicked
       if ask_button:
-    
-            response = client.chat.completions.create(
-              model="gpt-4-vision-preview",
-              messages=[
+          with st.spinner("Analysing the image ..."):
+
+             # Without Stream
+            #response = client.chat.completions.create(
+             # model="gpt-4-vision-preview",
+            messages=[
                 {
                   "role": "user",
                   "content": [
@@ -81,14 +83,29 @@ def main():
                       "type": "image",
                       "image":encoded_image,
                       "resize": 768
-                    },
+                       },
                   ],
-                }
+                 }
               ],
-              max_tokens=500,
-            )
+            #  max_tokens=500,
+            #)
 
-
+            # Stream the response
+            full_response = ""
+            message_placeholder = st.empty()
+            for completion in client.chat.completions.create(
+                model="gpt-4-vision-preview", messages=messages, 
+                max_tokens=500, stream=True
+            ):
+                # Check if there is content to display
+                if completion.choices[0].delta.content is not None:
+                    full_response += completion.choices[0].delta.content
+                    message_placeholder.markdown(full_response + "▌")
+            # Final update to placeholder after the stream ends
+            res = message_placeholder.markdown(full_response)
+    
+            # Display the response in the app
+            # st.write(response.choices[0].message.content)
 
 
 
@@ -96,9 +113,14 @@ def main():
             <div style="background-color: #F5F5F5; padding: 10px; border-radius: 5px;">
                 <p style="font-size: 20px; color: gray; font-weight: bold;">{}</p>
             </div>
-            '''.format(response.choices[0].message.content)
+            '''.format(res.choices[0].message.content)
 
-            st.write(styled_container, unsafe_allow_html=True)
+            #st.write(styled_container, unsafe_allow_html=True)
+
+    else:
+      # Warnings for user action required
+      if not uploaded_file and ask_button:
+          st.warning("Please upload an image.")
 
       
       
