@@ -3,6 +3,7 @@ from openai import OpenAI
 import base64
 import streamlit as st
 import tempfile
+from pypdf import PdfReader
 
 client = OpenAI(api_key=st.secrets["OPENAI_API_KEY"])
 
@@ -16,6 +17,18 @@ def apply_trained_model(image):
 def encode_image(image_path):
     with open(image_path, "rb") as image_file:
         return base64.b64encode(image_file.read()).decode("utf-8")
+    
+
+def convert_pdf_image_to_base64(pdf_path):
+      reader = PdfReader(pdf_path)
+      page = reader.pages[0]
+      for image in page.images:
+          image_data=image.data
+                
+          # Encode the image data as base64
+          base64_str = base64.b64encode(image_data).decode('utf-8')
+          return base64_str, image_data
+   
 
 
 def main():
@@ -24,21 +37,34 @@ def main():
     #Upload mindmap image to be analyzed
     uploaded_file = st.file_uploader("Upload your mindmap")
     if uploaded_file is not None:
-      
-        # Save the uploaded file to a temporary location
-      st.image(uploaded_file, caption='Your mindmap image')  
-      with tempfile.NamedTemporaryFile(delete=False) as temp_file:
-        temp_file.write(uploaded_file.read())
-        file_path = temp_file.name
+      st.success("File uploaded successfully!")
+      # Check the file type
+      file_extension = uploaded_file.name.split(".")[-1].lower()
+      if file_extension == "pdf":
+        # If the uploaded file is a PDF
+        # Read the contents of the PDF file
+        pdf_content = uploaded_file.getvalue()
+        with tempfile.NamedTemporaryFile(delete=False) as temp_file:
+          temp_file.write(uploaded_file.read())
+          file_path = temp_file.name  
+        encoded_image, image_data = convert_pdf_image_to_base64(file_path)
+        st.image(image_data, caption='Your mindmap image')
+      else:
 
-      image = cv2.imread(file_path)
+          # Save the uploaded file to a temporary location
+        st.image(uploaded_file, caption='Your mindmap image')  
+        with tempfile.NamedTemporaryFile(delete=False) as temp_file:
+          temp_file.write(uploaded_file.read())
+          file_path = temp_file.name
 
-      #Get central image and crop it out
-      
-  
-      
-      # Encode your image
-      encoded_image = encode_image(file_path)
+        image = cv2.imread(file_path)
+
+        #Get central image and crop it out
+        
+    
+        
+        # Encode your image
+        encoded_image = encode_image(file_path)
 
       prompt = (
       'You are a virtual lecturer grading student assignments on mind maps.'
@@ -108,13 +134,6 @@ def main():
 
 
 
-            #styled_container = '''
-            #<div style="background-color: #F5F5F5; padding: 10px; border-radius: 5px;">
-            #    <p style="font-size: 20px; color: gray; font-weight: bold;">{}</p>
-           # </div>
-          #  '''.format(response.choices[0].message.content)
-
-            #st.write(styled_container, unsafe_allow_html=True)
 
    
       
