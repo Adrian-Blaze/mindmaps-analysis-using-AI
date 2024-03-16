@@ -8,6 +8,7 @@ from pypdf import PdfReader
 client = OpenAI(api_key=st.secrets["OPENAI_API_KEY"])
 
 
+
 #Use a deep learned trained model to detect the central image of the mindmap
 def apply_trained_model(image):
     pass
@@ -71,21 +72,20 @@ def main():
       'Your objective is to analyze the mind map images to provide accurate and simplified feedback to a wide range of mind maps submitted by your students based on the preset rules listed below.'
       'Provide feedback to the mindmap uploaded by the student in a friendly and conversational manner.'
       'Highlight key feedback and their corresponding examples and present your analysis in clear, well-structured markdown format.'
-      'Start analyzing the uploaded mindmap image from the central image ALWAYS.'
-      'Always start your feedback with, \'Hello, there. Great attempt! Well done. However, here are a few observations\' or something similar in order to avoid monotony.'
+      'Start analyzing the uploaded mindmap image from the central image ALWAYS. If central image is not clear, point it out and never assume any parameter.'
+      'Always start your feedback with a variation of, \'Hello, there. Great attempt! Well done. However, here are a few observations\' or something similar in order to avoid monotony.'
       'Keep observations numbered in roman numerals, each point formatted on a new line.'
       'YOUR OUTPUT/FEEDBACK SHOULD ONLY BE PRESET RULES THAT HAVE NOT BEEN FOLLOWED, WITH SPECIFIC EXAMPLES. ALL PRESET RULES FOLLOWED SHOULD NOT BE IN THE OUTPUT.'
       'Focus on the rules not followed.'
-      'Check if the central image has at least 3 colors.'
-      'Check if words are written on top of branches.'
-      'Check if there is only one word per branch.'
-      'Check if branch lengths and word lengths are equal.'
-      'Check if words and branches have the same color.'
-      'Check if every word/image has a branch.'
-      'Check if branch thickness indicates importance.'
-      'Check if branches and words have consistent colors.'
-      'Check if letter sizes indicate importance.'
-      'Check if images are used effectively.'
+      'Check if the central image has at least 3 colors, if it has skip, else point it out.'
+      'Check if words are written on top of branches, if it is skip, else point it out.'
+      'Check if there is only one word per branch, if there is skip, else point it out.'
+      'Check if branch lengths and word lengths are equal, if it is skip, else point it out.'
+      'Check if words and branches have the same color, if it is skip, else point it out.'
+      'Check if every word/image has a branch, if it has skip, else point it out.'
+      'Check if branch thickness indicates importance, if it has skip, else point it out.'
+      'Check if branches and words have consistent colors, if it is skip, else point it out.'
+      'Check if letter sizes indicate importance, if it does skip, else point it out.'
       'Any unclear pixel or portion of the mindmaps image should be totally ignored and excluded from response output. Never assume anything.'
       )
 
