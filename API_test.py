@@ -2,7 +2,7 @@ import requests
 import base64
 
     # Define the path to the image file
-image_path = f'C:/Users/user/desktop/mindmaps_images/mindmap(central image)/images/train/support_mindmap.jpg'
+image_path = f'C:/Users/user/desktop/Python_lessons/mindmaps_images/mindmap(central image)/images/train/support_mindmap.jpg'
 
 
 def test_endpoint():

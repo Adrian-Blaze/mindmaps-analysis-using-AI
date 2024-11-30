@@ -66,18 +66,23 @@ def analyze_image(data: Image):
             - If most mind map branches are without associated images, respond with "Use more images in the Mind Map" \
             """
         response = client.chat.completions.create(
-            model="gpt-4-vision-preview",
+            model="gpt-4o",
             messages=[
-                {
-                    "role": "user",
-                    "content": [
-                        {"type": "text", "text": prompt},
-                        {"type": "image", "image": encoded_image, "resize": 768},
-                    ],
-                }
-            ],
-            max_tokens=500,
-        )
+    {"role": "system", "content": prompt},  # Added missing comma
+    {
+      "role": "user",
+      "content": [
+        {
+          "type": "image_url",
+          "image_url": {'url' : f"data:image/png;base64,{encoded_image}"}  # Corrected key for image URL
+        },
+      ],
+    },
+  ],
+  # Uncomment the line below if token limit is needed
+  max_tokens=500,
+)
+
         return {"feedback": response.choices[0].message.content}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
