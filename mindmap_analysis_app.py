@@ -119,7 +119,7 @@ def main():
             full_response = ""
             message_placeholder = st.empty()
             for completion in client.chat.completions.create(
-                model="gpt-4-vision-preview", messages=messages, 
+                model="gpt-4o", messages=messages, 
                 max_tokens=500, stream=True
             ):
                 # Check if there is content to display
